@@ -1,0 +1,46 @@
+#lang racket
+(require csc151)
+(define iowa-registration (read-csv-file "/home/coverpau/Desktop/iowa-voter-registration-2018-02.csv"))
+(define pow-registration (read-csv-file "/home/coverpau/Desktop/poweshiek-voter-registration.csv"))
+
+;Problem 1
+;a
+(define caddddr (o car cddddr))
+
+(define republican-sort?
+  (lambda (place-one place-two)
+    (> (caddddr place-one) (caddddr place-two))))
+
+(define most-republicans
+  (lambda (file)
+    (take (sort file republican-sort?) 5))) 
+
+;b
+(define ratio
+  (lambda (info)
+    (cons (/ (cadddr info) (list-ref info 8)) info)))
+
+(define ratio-sort?
+  (lambda (info-one info-two)
+    (> (car info-one) (car info-two))))
+
+(define top-five
+  (lambda (file)
+    (map (section take <> 4) (take (sort (map ratio file) ratio-sort?) 5))))
+
+(define most-democratic
+  (lambda (file)
+    (map (section take <> 3) (map cons (map cadddr (top-five file)) (map cons (map cadr (top-five file)) (top-five file))))))
+  
+
+
+    ;(append (cons car (top-five file)) (cons cadr (top-five file)) (cons caddddr (top-five file)))))
+  
+  
+    #|
+(define top-five
+  (take (sort (map (section cons (map ratio iowa-registration) <>) iowa-registration) > ) 5))
+
+(define most-democratic
+  (map append (map (section list-ref <> 0) top-five) (map (section list-ref <> 1) top-five) (map (section list-ref <> 3) top-five)))
+|#
